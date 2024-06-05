@@ -1,0 +1,156 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: auth-container
+        image: rayyanatttaullah09/auth:latest
+        ports:
+        - containerPort: 4000
+        env:
+        - name: MONGO_URL
+          value: "mongodb://mongodb:27017/"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classroom-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: classroom
+  template:
+    metadata:
+      labels:
+        app: classroom
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: classroom-container
+        image: rayyanatttaullah09/classroom:latest
+        ports:
+        - containerPort: 4001
+        env:
+        - name: MONGO_URL
+          value: "mongodb://mongodb:27017/"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: post-container
+        image: rayyanatttaullah09/post:latest
+        ports:
+        - containerPort: 4002
+        env:
+        - name: MONGO_URL
+          value: "mongodb://mongodb:27017/"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: events
+  template:
+    metadata:
+      labels:
+        app: events
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: events-container
+        image: rayyanatttaullah09/event-bus:latest
+        ports:
+        - containerPort: 4009
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: client-container
+        image: rayyanatttaullah09/client:latest
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: exam-cluster-m02
+      containers:
+      - name: mongodb-container
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
