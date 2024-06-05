@@ -13,24 +13,25 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            steps {
-                dir('Auth') {
-                    echo 'Installing dependencies for Auth'
-                }
-                dir('Classroom') {
-                    echo 'Installing dependencies for Classroom'
-                }
-                dir('Post') {
-                    echo 'Installing dependencies for Post'
-                }
-                dir('EventBus') {
-                    echo 'Installing dependencies for EventBus'
-                }
-                dir('client') {
-                    echo 'Installing dependencies for client'
-                }
-            }
+    steps {
+        dir('Auth') {
+            bat 'npm.cmd install'
         }
+        dir('Classroom') {
+            bat 'npm.cmd install'
+        }
+        dir('Post') {
+            bat 'npm.cmd install'
+        }
+        dir('EventBus') {
+            bat 'npm.cmd install'
+        }
+        dir('client') {
+            bat 'npm.cmd install'
+        }
+    }
+}
+
 
         stage('Build and Push Docker Images') {
             steps {
@@ -67,7 +68,7 @@ pipeline {
 
         stage('Deploy Containers') {
             steps {
-                sh 'docker-compose -f docker-compose.yml up -d'
+                bat 'docker-compose -f docker-compose.yml up -d'
             }
         }
     }
