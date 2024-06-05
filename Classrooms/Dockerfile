@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the code to the working directory
 COPY . .
 
-# Expose the port the auth service uses
-EXPOSE 3161
+# Expose the port the Classroom service uses
+EXPOSE 3162
 
-# Command to run the auth service server
+# Command to run the Classroom service server
 CMD ["node", "index.js"]

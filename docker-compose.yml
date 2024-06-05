@@ -5,13 +5,53 @@ services:
     build:
       context: ./Auth
       dockerfile: Dockerfile
-    image: 1161/auth:latest  # Set the desired image name here
+    image: 1161/auth:latest
     ports:
-      - "1161:4000"
+      - "3161:4000"
     depends_on:
       - mongodb
     environment:
       - MONGO_URL=mongodb://mongodb:27017/
+
+  classroom:
+    build:
+      context: ./Classroom
+      dockerfile: Dockerfile
+    image: 1161/classroom:latest
+    ports:
+      - "3162:4001"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/
+
+  post:
+    build:
+      context: ./Post
+      dockerfile: Dockerfile
+    image: 1161/post:latest
+    ports:
+      - "3164:4002"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/
+
+  events:
+    build:
+      context: ./EventBus
+      dockerfile: Dockerfile
+    image: 1161/event-bus:latest
+    ports:
+      - "3163:4009"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: 1161/client:latest
+    ports:
+      - "1161:80"
 
   mongodb:
     image: mongo:latest
